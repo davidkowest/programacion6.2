@@ -11,15 +11,31 @@ public class Biblioteca {
 
 	public static void main(String[] args) {
 		
+		menu();
+		
 		
 	}
 
 	public static void catalogo() {
+		Libro libro1 = new Libro("Hola", "Adios");
+		libros.add(libro1);
+		
+		Libro libro2 = new Libro("harry potter", "jk rowling");
+		libros.add(libro1);
+		
+		Socio socio1 = new Socio("David Aguilar", 1);
+		socios.add(socio1);
 	}
 
 	public static void menu() {
+		
+	int opcion;
+		
+		do {
+			
+		
 		System.out.println("Escoja una opción del menú: ");
-		int opcion = entrada.nextInt();
+		opcion = entrada.nextInt();
 		switch (opcion) {
 		case 1:
 			añadirlibro();
@@ -27,9 +43,12 @@ public class Biblioteca {
 		case 2:
 			añadirsocio();
 			break;
-		default:
+		case 3: consultarLibro();
+			break;
+		case 4: atenderPeticion();
 			break;
 		}
+		} while (opcion>1 || opcion<5);
 	}
 
 	public static void añadirlibro() {
@@ -83,17 +102,23 @@ public class Biblioteca {
 					if (li.getSocio()!=null) {
 						System.out.println("El libro no está disponible en este momento");
 					} else {
-						li.setSocio(socios.stream().filter(so -> so.getnSocio() == nsocio));
+						socios
+						.stream()
+						.filter(so -> so.getnSocio() == nsocio)
+						.forEach(so -> li.setSocio(so));
+						
+						
+						
+						System.out.println("El socio "+nsocio+" se ha llevado el libro "+titulo);
 					}
 				} );
 			}
 			
 		}
 		
-		
-		
-		
-		
+	}
+	
+	public static void devolverLibro () {
 		
 	}
 	
