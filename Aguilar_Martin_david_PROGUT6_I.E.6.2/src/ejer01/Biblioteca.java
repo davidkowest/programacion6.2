@@ -11,20 +11,26 @@ public class Biblioteca {
 
 	public static void main(String[] args) {
 		
+		catalogo();
 		menu();
 		
 		
-	}
+		}
+		
+		
+	
 
 	public static void catalogo() {
 		Libro libro1 = new Libro("Hola", "Adios");
 		libros.add(libro1);
 		
-		Libro libro2 = new Libro("harry potter", "jk rowling");
-		libros.add(libro1);
+		Libro libro2 = new Libro("potter", "jk rowling");
+		libros.add(libro2);
 		
-		Socio socio1 = new Socio("David Aguilar", 1);
+		Socio socio1 = new Socio("David Aguilar", 0);
 		socios.add(socio1);
+		Socio socio2 = new Socio("Pedro Jimenez", 1);
+		socios.add(socio2);
 	}
 
 	public static void menu() {
@@ -81,20 +87,64 @@ public class Biblioteca {
 
 	}
 	
-	public static void atenderPeticion () {
+	public static void consultarPrestamo() {
 		System.out.println("Introduce el numero de socio");
 		int nsocio = entrada.nextInt();
-		boolean existe = socios.contains(nsocio);
-		
-		if (!existe) {
-			System.out.println("No existe un socio con ese numero");
+		if (buscaSocio(nsocio)) {
+			socios.stream().filter(so -> so.getnSocio() == nsocio);
 		} else {
+			System.out.println("No existe un socio con ese numero");
+		}
+	}
+	
+//	public static void atenderPeticion1 () {
+//		System.out.println("Introduce el numero de socio");
+//		int nsocio = entrada.nextInt();
+//		boolean existe = socios.contains(nsocio);
+//		
+//		if (!existe) {
+//			System.out.println("No existe un socio con ese numero");
+//		} else {
+//			System.out.println("Introduce el titulo del libro");
+//			String titulo = entrada.next();
+//			existe = libros.contains(titulo);
+//			if (!existe) {
+//				System.out.println("No tenemos ese libro");
+//			} else {
+//				libros
+//				.stream()
+//				.filter(li -> li.getTitulo().equalsIgnoreCase(titulo))
+//				.forEach(li -> {
+//					if (li.getSocio()!=null) {
+//						System.out.println("El libro no está disponible en este momento");
+//					} else {
+//						socios
+//						.stream()
+//						.filter(so -> so.getnSocio() == nsocio)
+//						.forEach(so -> li.setSocio(so));
+//						
+//						socios
+//						.stream()
+//						.filter(so -> so.getnSocio() == nsocio)
+//						.forEach(so -> so.setPrestamo(li));
+//						
+//						
+//						System.out.println("El socio "+nsocio+" se ha llevado el libro "+titulo);
+//					}
+//				} );
+//			}
+//			
+//		}
+//		
+//	}
+	
+	public static void atenderPeticion() {
+		System.out.println("Introduce el numero de socio");
+		int nsocio = entrada.nextInt();
+		if (buscaSocio(nsocio)) {
 			System.out.println("Introduce el titulo del libro");
 			String titulo = entrada.next();
-			existe = libros.contains(titulo);
-			if (!existe) {
-				System.out.println("No tenemos ese libro");
-			} else {
+			if (buscaLibro(titulo)) {
 				libros
 				.stream()
 				.filter(li -> li.getTitulo().equalsIgnoreCase(titulo))
@@ -107,15 +157,47 @@ public class Biblioteca {
 						.filter(so -> so.getnSocio() == nsocio)
 						.forEach(so -> li.setSocio(so));
 						
-						
+						socios
+						.stream()
+						.filter(so -> so.getnSocio() == nsocio)
+						.forEach(so -> so.setPrestamo(li));
 						
 						System.out.println("El socio "+nsocio+" se ha llevado el libro "+titulo);
 					}
-				} );
+				});
+			} else {
+				System.out.println("No existe un titulo con ese nombre");
 			}
-			
+		}else {
+			System.out.println("No existe ese socio");
+		}
+		for (int i = 0; i < socios.get(0).getPrestamo().size(); i++) {
+			System.out.println(socios.get(0).getPrestamo().get(i).getTitulo());
 		}
 		
+	}
+	
+	public static boolean buscaSocio(int nsocio) {
+		boolean existe = false;
+		for (Socio socio : socios) {
+			if (socio.getnSocio()== nsocio) {
+				existe=true;
+				break;
+			} 	
+			
+		}
+		return existe;
+	}
+	
+	public static boolean buscaLibro(String titulo) {
+		boolean existe = false;
+		for (Libro libro : libros) {
+			if (libro.getTitulo().equals(titulo)) {
+				existe=true;
+				break;
+			}
+		}
+		return existe;
 	}
 	
 	public static void devolverLibro () {
